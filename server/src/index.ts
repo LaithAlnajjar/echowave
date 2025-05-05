@@ -1,8 +1,11 @@
-import express from "express";
+import express, { Request, Response } from "express";
+import { authRouter } from "./routes/authRoutes";
 
 const app = express();
 
-app.get("/", (req, res) => {
+app.use("/auth", authRouter);
+
+app.get("/", (req: Request, res: Response) => {
   res.send("Hello World");
 });
 

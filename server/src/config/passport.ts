@@ -23,14 +23,14 @@ const verifyCallback = async (
 
   //User does not exist in the database
   if (!user) {
-    return done(null, { message: "User does not exist." });
+    return done(null, false, { message: "User does not exist." });
   }
 
   const isValid = await bcrypt.compare(password, user.password);
   if (isValid) {
     return done(null, user);
   } else {
-    return done(null, { message: "Password is not valid." }); // Password was invalid
+    return done(null, false, { message: "Password is not valid." }); // Password was invalid
   }
 };
 

@@ -4,9 +4,15 @@ import passport from "passport";
 import session from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
+import "./config/passport";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 const prisma = new PrismaClient();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const SESSION_SECRET = process.env.SECRET;
 if (!SESSION_SECRET) {
@@ -32,7 +38,11 @@ app.use(passport.session());
 app.use("/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World");
+  if (req.isAuthenticated()) {
+    res.send("YOU ARE AUTHENTICATED");
+  } else {
+    res.send("YOU ARE NOT AUTHENTICATED.");
+  }
 });
 
 app.listen(3000, () => {
